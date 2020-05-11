@@ -1,6 +1,6 @@
-# Título del Proyecto
+# Backend P.N.C 2.0
 
-_Acá va un párrafo que describa lo que es el proyecto_
+Proyecto de practica de la empresa Cidenet para mejorar la programacion de sus empleados. En este Proyecto estara integrado por la parte de backend con el lenguaje java y un framework llamado Spring Boot .  El objetivo sera recrear un software basico de Convocatorias de trabajo
 
 ## Comenzando 🚀
 
