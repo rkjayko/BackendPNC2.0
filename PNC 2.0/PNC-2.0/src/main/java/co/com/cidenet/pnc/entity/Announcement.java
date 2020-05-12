@@ -15,11 +15,9 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
-
 /*
 Created by : Jaime Mejia
 */
-
 
 @Entity
 @Table(name = "Announcement")
@@ -150,5 +148,4 @@ public class Announcement {
 	public void setEndAnnouncementDate(Date endAnnouncementDate) {
 		this.endAnnouncementDate = endAnnouncementDate;
 	}
-	
-}
+}	
