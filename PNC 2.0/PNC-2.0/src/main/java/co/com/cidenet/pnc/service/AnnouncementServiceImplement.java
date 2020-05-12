@@ -31,7 +31,7 @@ public class AnnouncementServiceImplement implements InterfaceAnnouncementServic
     }
 
     @Override
-    //@Transactional(readOnly = true)
+    @Transactional
     public List<Announcement> findAll() {
         return (List<Announcement>) announcementRepository.findAll();
     }
