@@ -62,10 +62,10 @@ public class Announcement {
 	private Status status;
 
     @Temporal(TemporalType.DATE)
-	private Date InitialAnnouncementDate;
+	private Date initialAnnouncementDate;
     
     @Temporal(TemporalType.DATE)
-	private Date EndAnnouncementDate;
+	private Date endAnnouncementDate;
     
    	
 	/**
@@ -129,26 +129,26 @@ public class Announcement {
 
 	
 	public Date getInitialAnnouncementDate() {
-		return InitialAnnouncementDate;
+		return initialAnnouncementDate;
 	}
 	/**
 	 * @param initialAnnouncementDate the initialAnnouncementDate to set
 	 */
 	public void setInitialAnnouncementDate(Date initialAnnouncementDate) {
-		InitialAnnouncementDate = initialAnnouncementDate;
+		this.initialAnnouncementDate = initialAnnouncementDate;
 	}
 	
 	/**
 	 * @return the endAnnouncementDate
 	 */
 	public Date getEndAnnouncementDate() {
-		return EndAnnouncementDate;
+		return endAnnouncementDate;
 	}
 	/**
 	 * @param endAnnouncementDate the endAnnouncementDate to set
 	 */
 	public void setEndAnnouncementDate(Date endAnnouncementDate) {
-		EndAnnouncementDate = endAnnouncementDate;
+		this.endAnnouncementDate = endAnnouncementDate;
 	}
 	
 }
