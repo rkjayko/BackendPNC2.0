@@ -13,29 +13,26 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
-
 @RunWith(MockitoJUnitRunner.class)
 public class AnnouncementTest {
 
-    @Mock
-    AnnouncementRepository announcementRepository;
+  @Mock AnnouncementRepository announcementRepository;
 
-    @InjectMocks
-    AnnouncementServiceImplement announcementService ;
+  @InjectMocks AnnouncementServiceImplement announcementService;
 
-    @BeforeAll
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
+  @BeforeAll
+  public void setUp() {
+    MockitoAnnotations.initMocks(this);
+  }
 
-    @Test
-    public void createProductTest() {
-        Announcement announcementOne = new Announcement();
-        announcementOne.setId(1L);
-        announcementOne.setJob(null);
-        when(announcementRepository.save(any(Announcement.class))).thenReturn(announcementOne);
-        Announcement announcementFinal = announcementService.save(announcementOne);
-        verify(announcementRepository, times(1)).save(announcementOne);
-        assertNotNull(announcementFinal);
-    }
+  @Test
+  public void createProductTest() {
+    Announcement announcementOne = new Announcement();
+    announcementOne.setId(1L);
+    announcementOne.setJob(null);
+    when(announcementRepository.save(any(Announcement.class))).thenReturn(announcementOne);
+    Announcement announcementFinal = announcementService.save(announcementOne);
+    verify(announcementRepository, times(1)).save(announcementOne);
+    assertNotNull(announcementFinal);
+  }
 }

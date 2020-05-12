@@ -18,40 +18,38 @@ import co.com.cidenet.pnc.repository.AnnouncementRepository;
 @Service
 public class AnnouncementServiceImplement implements InterfaceAnnouncementService {
 
-    @Autowired
-    private AnnouncementRepository announcementRepository;
+  @Autowired private AnnouncementRepository announcementRepository;
 
-    public AnnouncementServiceImplement(AnnouncementRepository announcementRepository) {
-        this.announcementRepository = announcementRepository;
-    }
+  public AnnouncementServiceImplement(AnnouncementRepository announcementRepository) {
+    this.announcementRepository = announcementRepository;
+  }
 
-    @Override
-    @Transactional
-    public List<Announcement> findAll() {
-        return (List<Announcement>) announcementRepository.findAll();
-    }
+  @Override
+  @Transactional
+  public List<Announcement> findAll() {
+    return (List<Announcement>) announcementRepository.findAll();
+  }
 
-    @Override
-    @Transactional
-    public Announcement save(Announcement announcement) {
-        return announcementRepository.save(announcement);
-    }
+  @Override
+  @Transactional
+  public Announcement save(Announcement announcement) {
+    return announcementRepository.save(announcement);
+  }
 
-    @Override
-    //@Transactional(readOnly = true)
-    public Announcement findOneAnnouncement(Long id) {
-        return announcementRepository.findById(id).orElse(null);
-    }
+  @Override
+  // @Transactional(readOnly = true)
+  public Announcement findOneAnnouncement(Long id) {
+    return announcementRepository.findById(id).orElse(null);
+  }
 
-    @Override
-    public void deleteAnnouncement(Long id) {
-        announcementRepository.deleteById(id);
-    }
+  @Override
+  public void deleteAnnouncement(Long id) {
+    announcementRepository.deleteById(id);
+  }
 
-    public Object listErrors(BindingResult result) {
-        return result.getFieldErrors()
-                .stream()
-                .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
-                .collect(Collectors.toList());
-    }
+  public Object listErrors(BindingResult result) {
+    return result.getFieldErrors().stream()
+        .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
+        .collect(Collectors.toList());
+  }
 }
