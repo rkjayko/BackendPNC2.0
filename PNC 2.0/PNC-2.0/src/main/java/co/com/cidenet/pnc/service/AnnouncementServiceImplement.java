@@ -1,6 +1,4 @@
-/**
- * 
- */
+/** */
 package co.com.cidenet.pnc.service;
 
 import java.util.List;
@@ -16,10 +14,7 @@ import co.com.cidenet.pnc.entity.Announcement;
 
 import co.com.cidenet.pnc.repository.AnnouncementRepository;
 
-/**
- * @author jmejia
- *
- */
+/** @author jmejia */
 @Service
 public class AnnouncementServiceImplement implements InterfaceAnnouncementService {
 
@@ -59,5 +54,4 @@ public class AnnouncementServiceImplement implements InterfaceAnnouncementServic
                 .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
                 .collect(Collectors.toList());
     }
-
 }
