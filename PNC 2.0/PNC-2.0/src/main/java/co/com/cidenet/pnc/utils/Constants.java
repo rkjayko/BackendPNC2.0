@@ -9,5 +9,5 @@ public final class Constants {
   public static final String MSG_ERROR_NOT_EXIST = "No existe en la base de datos";
   public static final String STATS = "stats";
 
-  private Constants() { }
+  private Constants() {}
 }
