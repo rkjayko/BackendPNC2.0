@@ -23,8 +23,6 @@ Created by : Jaime Mejia
 @Table(name = "Announcement")
 public class Announcement {
 
-  private static final long serialVersionUID = 1L;
-
   enum Job {
     JAVA,
     PLSQL,
