@@ -14,27 +14,17 @@ Mira **Deployment** para conocer como desplegar el proyecto.
 _Que cosas necesitas para instalar el software y como instalarlas_
 
 ```
-Da un ejemplo
+Se recomienda el IDE de Eclipse
+Instalado el plugin de spring Boot
+Tener conocimiento basico de Maven
 ```
 
-### Instalación 
+### Instalación 🔧
 
-🔧
-
-
-
-_Una serie de ejemplos paso a paso que te dice lo que debes ejecutar para tener un entorno de desarrollo ejecutandose_
-
-_Dí cómo será ese paso_
+_Clonar el proyecto en tu carpeta preferida y correr el proyecto_
 
 ```
-Da un ejemplo
-```
-
-_Y repite_
-
-```
-hasta finalizar
+Compilar el proyecto con maven clean and install
 ```
 
 _Finaliza con un ejemplo de cómo obtener datos del sistema o como usarlos para una pequeña demo_
@@ -43,7 +33,7 @@ _Finaliza con un ejemplo de cómo obtener datos del sistema o como usarlos para 
 
 ### Analice las pruebas end-to-end 🔩
 
-_Explica que verifican estas pruebas y por qué_
+_Algunos Json de ejemplo para utilizar desde el postman, el ambiente corre en localhost:8081_
 
 ```
 Da un ejemplo
@@ -61,7 +51,6 @@ Da un ejemplo
 
 Basta con descargar o clonar el proyecto y ejecutar el pom.xml bajo el siguiente comando
 
-
 ```
 mvn clean install
 ```
@@ -75,7 +64,7 @@ mvn clean install
 
 ## Contribuyendo 🖇️
 
-Por favor lee el [CONTRIBUTING.md](https://gist.github.com/villanuevand/xxxxxx) para detalles de nuestro código de conducta, y el proceso para enviarnos pull requests.
+Por favor lee el [CONTRIBUTING.md](https://gist.github.com/rkjaime/xxxxxx) para detalles de nuestro código de conducta, y el proceso para enviarnos pull requests.
 
 ## Wiki 📖
 
