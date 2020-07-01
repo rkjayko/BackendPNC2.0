@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.com.cidenet.pnc.entity.Announcement;
@@ -105,23 +104,23 @@ public class AnnouncementController {
     response.put("announcement", newAnnouncement);
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
-  
-	@PutMapping("/editannouncement/{id}")
-	public Announcement update(@RequestBody Announcement announcement, @PathVariable Long id) {
-		Announcement currentAnnouncement = this.announcementService.findOneAnnouncement(id);
-		currentAnnouncement.setAnnouncementName(announcement.getAnnouncementName());
-	    Map<String, Object> response = new HashMap<>();
-		
-		//currentAnnouncement.setJob((Job) announcement.getJob());
-		currentAnnouncement.setSalary(announcement.getSalary());
-		//currentAnnouncement.setStatus(announcement.getStatus());
-		currentAnnouncement.setInitialAnnouncementDate(announcement.getInitialAnnouncementDate());
-		currentAnnouncement.setEndAnnouncementDate(announcement.getEndAnnouncementDate());
-		this.announcementService.save(currentAnnouncement);
-	    response.put("announcement", currentAnnouncement);
-		
-		return currentAnnouncement;
-	}  
+
+  @PutMapping("/editannouncement/{id}")
+  public Announcement update(@RequestBody Announcement announcement, @PathVariable Long id) {
+    Announcement currentAnnouncement = this.announcementService.findOneAnnouncement(id);
+    currentAnnouncement.setAnnouncementName(announcement.getAnnouncementName());
+    Map<String, Object> response = new HashMap<>();
+
+    // currentAnnouncement.setJob((Job) announcement.getJob());
+    currentAnnouncement.setSalary(announcement.getSalary());
+    // currentAnnouncement.setStatus(announcement.getStatus());
+    currentAnnouncement.setInitialAnnouncementDate(announcement.getInitialAnnouncementDate());
+    currentAnnouncement.setEndAnnouncementDate(announcement.getEndAnnouncementDate());
+    this.announcementService.save(currentAnnouncement);
+    response.put("announcement", currentAnnouncement);
+
+    return currentAnnouncement;
+  }
 
   /*delete one announcement */
   @DeleteMapping("/announcement/{id}")
