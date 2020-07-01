@@ -1,6 +1,7 @@
 package co.com.cidenet.pnc.entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,20 +41,18 @@ public class Announcement {
   private Long id;
 
   @NotEmpty(message = "no puede estar vacio")
-  @Column(name = "ANNOUNCEMENT_NAME", nullable = false)
+  @Column(nullable = false)
   private String announcementName;
 
-  @NotEmpty(message = "no puede estar vacio")
-  @Column(name = "JOB", nullable = false)
+  @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
   private Job job;
 
-  @Column(name = "SALARY", nullable = false)
+  @Column(nullable = false)
   @Min(value = 0L, message = "El numero debe de ser positivo")
   private Integer salary;
 
-  @NotEmpty(message = "no puede estar vacio")
-  @Column(name = "STATUS", nullable = false)
+  @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
   private Status status;
 
@@ -122,4 +121,32 @@ public class Announcement {
   public void setEndAnnouncementDate(Date endAnnouncementDate) {
     this.endAnnouncementDate = endAnnouncementDate;
   }
+
+  
+	@Override
+	public int hashCode() {
+		return Objects.hash(announcementName, endAnnouncementDate, id, initialAnnouncementDate, job, salary, status);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Announcement)) {
+			return false;
+		}
+		Announcement other = (Announcement) obj;
+		return Objects.equals(announcementName, other.announcementName)
+				&& Objects.equals(endAnnouncementDate, other.endAnnouncementDate) && Objects.equals(id, other.id)
+				&& Objects.equals(initialAnnouncementDate, other.initialAnnouncementDate) && job == other.job
+				&& Objects.equals(salary, other.salary) && status == other.status;
+	}
+	@Override
+	public String toString() {
+		return "Announcement [id=" + id + ", announcementName=" + announcementName + ", job=" + job + ", salary=" + salary
+				+ ", status=" + status + ", initialAnnouncementDate=" + initialAnnouncementDate + ", endAnnouncementDate="
+				+ endAnnouncementDate + "]";
+	}
+  
+  
 }

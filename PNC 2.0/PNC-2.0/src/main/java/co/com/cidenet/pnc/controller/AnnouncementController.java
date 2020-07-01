@@ -12,12 +12,15 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.com.cidenet.pnc.entity.Announcement;
@@ -27,6 +30,7 @@ import co.com.cidenet.pnc.utils.Constants;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*")
 public class AnnouncementController {
 
   @Autowired private InterfaceAnnouncementService announcementService;
@@ -70,7 +74,7 @@ public class AnnouncementController {
     if (announcement == null) {
       response.put(
           Constants.MESSAGE,
-          "El ID del producto: ".concat(id.toString().concat(Constants.MSG_ERROR_NOT_EXIST)));
+          "El ID del Anuncio: ".concat(id.toString().concat(Constants.MSG_ERROR_NOT_EXIST)));
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     return new ResponseEntity<>(announcement, HttpStatus.OK);
@@ -97,10 +101,27 @@ public class AnnouncementController {
               .concat(e.getMostSpecificCause().getMessage()));
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    response.put(Constants.STATS, "El producto ha sido creado con éxito!");
+    response.put(Constants.STATS, "El anuncio ha sido creado con éxito!");
     response.put("announcement", newAnnouncement);
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
+  
+	@PutMapping("/editannouncement/{id}")
+	public Announcement update(@RequestBody Announcement announcement, @PathVariable Long id) {
+		Announcement currentAnnouncement = this.announcementService.findOneAnnouncement(id);
+		currentAnnouncement.setAnnouncementName(announcement.getAnnouncementName());
+	    Map<String, Object> response = new HashMap<>();
+		
+		//currentAnnouncement.setJob((Job) announcement.getJob());
+		currentAnnouncement.setSalary(announcement.getSalary());
+		//currentAnnouncement.setStatus(announcement.getStatus());
+		currentAnnouncement.setInitialAnnouncementDate(announcement.getInitialAnnouncementDate());
+		currentAnnouncement.setEndAnnouncementDate(announcement.getEndAnnouncementDate());
+		this.announcementService.save(currentAnnouncement);
+	    response.put("announcement", currentAnnouncement);
+		
+		return currentAnnouncement;
+	}  
 
   /*delete one announcement */
   @DeleteMapping("/announcement/{id}")
