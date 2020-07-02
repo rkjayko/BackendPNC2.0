@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.com.cidenet.pnc.entity.Announcement;
@@ -106,32 +105,33 @@ public class AnnouncementController {
     response.put("announcement", newAnnouncement);
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
-  
-	@PutMapping("/editannouncement/{id}")
-	public ResponseEntity<Map<String, Object>> update(@RequestBody Announcement announcement, @PathVariable Long id, BindingResult result) {
-		Announcement currentAnnouncement = this.announcementService.findOneAnnouncement(id);
-		Announcement newAnnouncement;
-	    Map<String, Object> response = new HashMap<>();
-	    if (result.hasErrors()) {
-	      response.put(Constants.ERROR, announcementService.listErrors(result));
-	      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-	    }
-	    try {
-	      newAnnouncement = announcementService.save(announcement);
-	    } catch (DataAccessException e) {
-	      response.put(Constants.MESSAGE, Constants.MSG_ERROR_DATABASE);
-	      response.put(
-	          Constants.ERROR,
-	          Objects.requireNonNull(e.getMessage())
-	              .concat(": ")
-	              .concat(e.getMostSpecificCause().getMessage()));
-	      return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-	    }
-	    response.put(Constants.STATUS, "SUCCESS");
-	    response.put(Constants.MESSAGE, "se edito correctamente el anuncio");
-	    response.put("announcement", newAnnouncement);
-	    return new ResponseEntity<>(response, HttpStatus.CREATED);
-	}  
+
+  @PutMapping("/editannouncement/{id}")
+  public ResponseEntity<Map<String, Object>> update(
+      @RequestBody Announcement announcement, @PathVariable Long id, BindingResult result) {
+    Announcement currentAnnouncement = this.announcementService.findOneAnnouncement(id);
+    Announcement newAnnouncement;
+    Map<String, Object> response = new HashMap<>();
+    if (result.hasErrors()) {
+      response.put(Constants.ERROR, announcementService.listErrors(result));
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+    try {
+      newAnnouncement = announcementService.save(announcement);
+    } catch (DataAccessException e) {
+      response.put(Constants.MESSAGE, Constants.MSG_ERROR_DATABASE);
+      response.put(
+          Constants.ERROR,
+          Objects.requireNonNull(e.getMessage())
+              .concat(": ")
+              .concat(e.getMostSpecificCause().getMessage()));
+      return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    response.put(Constants.STATUS, "SUCCESS");
+    response.put(Constants.MESSAGE, "se edito correctamente el anuncio");
+    response.put("announcement", newAnnouncement);
+    return new ResponseEntity<>(response, HttpStatus.CREATED);
+  }
 
   /*delete one announcement */
   @DeleteMapping("/announcement/{id}")
