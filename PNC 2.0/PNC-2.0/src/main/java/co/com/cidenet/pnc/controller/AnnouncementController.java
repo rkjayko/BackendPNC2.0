@@ -101,26 +101,36 @@ public class AnnouncementController {
               .concat(e.getMostSpecificCause().getMessage()));
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    response.put(Constants.STATS, "El anuncio ha sido creado con éxito!");
+    response.put(Constants.STATUS, "SUCCESS");
+    response.put(Constants.MESSAGE, "La convocatoria se ha creado correctamente");
     response.put("announcement", newAnnouncement);
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
   
 	@PutMapping("/editannouncement/{id}")
-	public Announcement update(@RequestBody Announcement announcement, @PathVariable Long id) {
+	public ResponseEntity<Map<String, Object>> update(@RequestBody Announcement announcement, @PathVariable Long id, BindingResult result) {
 		Announcement currentAnnouncement = this.announcementService.findOneAnnouncement(id);
-		currentAnnouncement.setAnnouncementName(announcement.getAnnouncementName());
+		Announcement newAnnouncement;
 	    Map<String, Object> response = new HashMap<>();
-		
-		//currentAnnouncement.setJob((Job) announcement.getJob());
-		currentAnnouncement.setSalary(announcement.getSalary());
-		//currentAnnouncement.setStatus(announcement.getStatus());
-		currentAnnouncement.setInitialAnnouncementDate(announcement.getInitialAnnouncementDate());
-		currentAnnouncement.setEndAnnouncementDate(announcement.getEndAnnouncementDate());
-		this.announcementService.save(currentAnnouncement);
-	    response.put("announcement", currentAnnouncement);
-		
-		return currentAnnouncement;
+	    if (result.hasErrors()) {
+	      response.put(Constants.ERROR, announcementService.listErrors(result));
+	      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	    }
+	    try {
+	      newAnnouncement = announcementService.save(announcement);
+	    } catch (DataAccessException e) {
+	      response.put(Constants.MESSAGE, Constants.MSG_ERROR_DATABASE);
+	      response.put(
+	          Constants.ERROR,
+	          Objects.requireNonNull(e.getMessage())
+	              .concat(": ")
+	              .concat(e.getMostSpecificCause().getMessage()));
+	      return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	    response.put(Constants.STATUS, "SUCCESS");
+	    response.put(Constants.MESSAGE, "se edito correctamente el anuncio");
+	    response.put("announcement", newAnnouncement);
+	    return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}  
 
   /*delete one announcement */
@@ -138,7 +148,7 @@ public class AnnouncementController {
               .concat(e.getMostSpecificCause().getMessage()));
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    response.put(Constants.STATS, "El producto ha sido eliminado con éxito!");
+    response.put(Constants.STATUS, "SUCCESS");
     response.put(Constants.MESSAGE, "asdasd!");
     return new ResponseEntity<>(response, HttpStatus.OK);
   }

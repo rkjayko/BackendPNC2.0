@@ -80,7 +80,7 @@ public class Announcement {
     this.announcementName = announcementName;
   }
 
-  public Enum<Job> getJob() {
+  public Job getJob() {
     return job;
   }
   /** @param job the job to set */
@@ -97,7 +97,7 @@ public class Announcement {
   }
 
   /** @return the status */
-  public Enum<Status> getStatus() {
+  public Status getStatus() {
     return status;
   }
   /** @param status the status to set */
