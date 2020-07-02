@@ -122,31 +122,46 @@ public class Announcement {
     this.endAnnouncementDate = endAnnouncementDate;
   }
 
-  
-	@Override
-	public int hashCode() {
-		return Objects.hash(announcementName, endAnnouncementDate, id, initialAnnouncementDate, job, salary, status);
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof Announcement)) {
-			return false;
-		}
-		Announcement other = (Announcement) obj;
-		return Objects.equals(announcementName, other.announcementName)
-				&& Objects.equals(endAnnouncementDate, other.endAnnouncementDate) && Objects.equals(id, other.id)
-				&& Objects.equals(initialAnnouncementDate, other.initialAnnouncementDate) && job == other.job
-				&& Objects.equals(salary, other.salary) && status == other.status;
-	}
-	@Override
-	public String toString() {
-		return "Announcement [id=" + id + ", announcementName=" + announcementName + ", job=" + job + ", salary=" + salary
-				+ ", status=" + status + ", initialAnnouncementDate=" + initialAnnouncementDate + ", endAnnouncementDate="
-				+ endAnnouncementDate + "]";
-	}
-  
-  
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+        announcementName, endAnnouncementDate, id, initialAnnouncementDate, job, salary, status);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof Announcement)) {
+      return false;
+    }
+    Announcement other = (Announcement) obj;
+    return Objects.equals(announcementName, other.announcementName)
+        && Objects.equals(endAnnouncementDate, other.endAnnouncementDate)
+        && Objects.equals(id, other.id)
+        && Objects.equals(initialAnnouncementDate, other.initialAnnouncementDate)
+        && job == other.job
+        && Objects.equals(salary, other.salary)
+        && status == other.status;
+  }
+
+  @Override
+  public String toString() {
+    return "Announcement [id="
+        + id
+        + ", announcementName="
+        + announcementName
+        + ", job="
+        + job
+        + ", salary="
+        + salary
+        + ", status="
+        + status
+        + ", initialAnnouncementDate="
+        + initialAnnouncementDate
+        + ", endAnnouncementDate="
+        + endAnnouncementDate
+        + "]";
+  }
 }
