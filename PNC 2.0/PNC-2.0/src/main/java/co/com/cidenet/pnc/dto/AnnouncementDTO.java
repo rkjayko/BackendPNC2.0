@@ -5,8 +5,6 @@
  */
 package co.com.cidenet.pnc.dto;
 
-import java.util.Date;
-import java.util.Objects;
 import java.util.UUID;
 
 public class AnnouncementDTO extends DTO {
@@ -22,11 +20,11 @@ public class AnnouncementDTO extends DTO {
     OPEN,
     CLOSED
   }
-  
-	enum English {
-	YES,
-	NO
-	}  
+
+  enum English {
+    YES,
+    NO
+  }
 
   private UUID id;
   private String announcementName;
@@ -75,26 +73,30 @@ public class AnnouncementDTO extends DTO {
   public void setStatus(Status status) {
     this.status = status;
   }
-/**
- * @return the english
- */
-public English getEnglish() {
-	return english;
-}
+  /** @return the english */
+  public English getEnglish() {
+    return english;
+  }
 
-/**
- * @param english the english to set
- */
-public void setEnglish(English english) {
-	this.english = english;
-}
+  /** @param english the english to set */
+  public void setEnglish(English english) {
+    this.english = english;
+  }
 
-@Override
-public String toString() {
-	return "AnnouncementDTO [id=" + id + ", announcementName=" + announcementName + ", job=" + job + ", salary="
-			+ salary + ", status=" + status + ", english=" + english + "]";
-}
-
-
-
+  @Override
+  public String toString() {
+    return "AnnouncementDTO [id="
+        + id
+        + ", announcementName="
+        + announcementName
+        + ", job="
+        + job
+        + ", salary="
+        + salary
+        + ", status="
+        + status
+        + ", english="
+        + english
+        + "]";
+  }
 }

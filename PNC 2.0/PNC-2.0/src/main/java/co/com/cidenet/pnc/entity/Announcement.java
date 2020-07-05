@@ -33,11 +33,11 @@ public class Announcement {
     OPEN,
     CLOSED
   }
-  
+
   enum English {
-	    YES,
-	    NO
-	  }
+    YES,
+    NO
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,7 +58,7 @@ public class Announcement {
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
   private Status status;
-  
+
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
   private English english;
@@ -105,40 +105,53 @@ public class Announcement {
   public void setStatus(Status status) {
     this.status = status;
   }
-	/*** @return the english*/
-public English getEnglish() {
-	return english;
-}
-/*** @param english the english to set*/
-public void setEnglish(English english) {
-	this.english = english;
-}
+  /*** @return the english*/
+  public English getEnglish() {
+    return english;
+  }
+  /*** @param english the english to set*/
+  public void setEnglish(English english) {
+    this.english = english;
+  }
 
-	@Override
-public int hashCode() {
-	return Objects.hash(announcementName, english, id, job, salary, status);
-}
-@Override
-public boolean equals(Object obj) {
-	if (this == obj) {
-		return true;
-	}
-	if (!(obj instanceof Announcement)) {
-		return false;
-	}
-	Announcement other = (Announcement) obj;
-	return Objects.equals(announcementName, other.announcementName) && english == other.english
-			&& Objects.equals(id, other.id) && job == other.job && Objects.equals(salary, other.salary)
-			&& status == other.status;
-}
+  @Override
+  public int hashCode() {
+    return Objects.hash(announcementName, english, id, job, salary, status);
+  }
 
-	@Override
-public String toString() {
-	return "Announcement [id=" + id + ", announcementName=" + announcementName + ", job=" + job + ", salary=" + salary
-			+ ", status=" + status + ", english=" + english + "]";
-}
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof Announcement)) {
+      return false;
+    }
+    Announcement other = (Announcement) obj;
+    return Objects.equals(announcementName, other.announcementName)
+        && english == other.english
+        && Objects.equals(id, other.id)
+        && job == other.job
+        && Objects.equals(salary, other.salary)
+        && status == other.status;
+  }
 
+  @Override
+  public String toString() {
+    return "Announcement [id="
+        + id
+        + ", announcementName="
+        + announcementName
+        + ", job="
+        + job
+        + ", salary="
+        + salary
+        + ", status="
+        + status
+        + ", english="
+        + english
+        + "]";
+  }
 
-
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 }
