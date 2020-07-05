@@ -22,14 +22,18 @@ public class AnnouncementDTO extends DTO {
     OPEN,
     CLOSED
   }
+  
+	enum English {
+	YES,
+	NO
+	}  
 
   private UUID id;
   private String announcementName;
   private Job job;
   private Integer salary;
   private Status status;
-  private Date initialAnnouncementDate;
-  private Date endAnnouncementDate;
+  private English english;
 
   /** @return the id */
   public UUID getId() {
@@ -71,44 +75,26 @@ public class AnnouncementDTO extends DTO {
   public void setStatus(Status status) {
     this.status = status;
   }
-  /** @return the initialAnnouncementDate */
-  public Date getInitialAnnouncementDate() {
-    return initialAnnouncementDate;
-  }
-  /** @param initialAnnouncementDate the initialAnnouncementDate to set */
-  public void setInitialAnnouncementDate(Date initialAnnouncementDate) {
-    this.initialAnnouncementDate = initialAnnouncementDate;
-  }
-  /** @return the endAnnouncementDate */
-  public Date getEndAnnouncementDate() {
-    return endAnnouncementDate;
-  }
-  /** @param endAnnouncementDate the endAnnouncementDate to set */
-  public void setEndAnnouncementDate(Date endAnnouncementDate) {
-    this.endAnnouncementDate = endAnnouncementDate;
-  }
+/**
+ * @return the english
+ */
+public English getEnglish() {
+	return english;
+}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(
-        announcementName, endAnnouncementDate, id, initialAnnouncementDate, job, salary, status);
-  }
+/**
+ * @param english the english to set
+ */
+public void setEnglish(English english) {
+	this.english = english;
+}
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!(obj instanceof AnnouncementDTO)) {
-      return false;
-    }
-    AnnouncementDTO other = (AnnouncementDTO) obj;
-    return Objects.equals(announcementName, other.announcementName)
-        && Objects.equals(endAnnouncementDate, other.endAnnouncementDate)
-        && Objects.equals(id, other.id)
-        && Objects.equals(initialAnnouncementDate, other.initialAnnouncementDate)
-        && job == other.job
-        && Objects.equals(salary, other.salary)
-        && status == other.status;
-  }
+@Override
+public String toString() {
+	return "AnnouncementDTO [id=" + id + ", announcementName=" + announcementName + ", job=" + job + ", salary="
+			+ salary + ", status=" + status + ", english=" + english + "]";
+}
+
+
+
 }

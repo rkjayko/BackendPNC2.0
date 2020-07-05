@@ -1,6 +1,5 @@
 package co.com.cidenet.pnc.entity;
 
-import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -11,8 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
@@ -35,6 +33,11 @@ public class Announcement {
     OPEN,
     CLOSED
   }
+  
+  enum English {
+	    YES,
+	    NO
+	  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,12 +58,10 @@ public class Announcement {
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
   private Status status;
-
-  @Temporal(TemporalType.DATE)
-  private Date initialAnnouncementDate;
-
-  @Temporal(TemporalType.DATE)
-  private Date endAnnouncementDate;
+  
+  @Column(nullable = false)
+  @Enumerated(value = EnumType.STRING)
+  private English english;
 
   /** @return the id */
   public Long getId() {
@@ -104,64 +105,40 @@ public class Announcement {
   public void setStatus(Status status) {
     this.status = status;
   }
+	/*** @return the english*/
+public English getEnglish() {
+	return english;
+}
+/*** @param english the english to set*/
+public void setEnglish(English english) {
+	this.english = english;
+}
 
-  public Date getInitialAnnouncementDate() {
-    return initialAnnouncementDate;
-  }
-  /** @param initialAnnouncementDate the initialAnnouncementDate to set */
-  public void setInitialAnnouncementDate(Date initialAnnouncementDate) {
-    this.initialAnnouncementDate = initialAnnouncementDate;
-  }
+	@Override
+public int hashCode() {
+	return Objects.hash(announcementName, english, id, job, salary, status);
+}
+@Override
+public boolean equals(Object obj) {
+	if (this == obj) {
+		return true;
+	}
+	if (!(obj instanceof Announcement)) {
+		return false;
+	}
+	Announcement other = (Announcement) obj;
+	return Objects.equals(announcementName, other.announcementName) && english == other.english
+			&& Objects.equals(id, other.id) && job == other.job && Objects.equals(salary, other.salary)
+			&& status == other.status;
+}
 
-  /** @return the endAnnouncementDate */
-  public Date getEndAnnouncementDate() {
-    return endAnnouncementDate;
-  }
-  /** @param endAnnouncementDate the endAnnouncementDate to set */
-  public void setEndAnnouncementDate(Date endAnnouncementDate) {
-    this.endAnnouncementDate = endAnnouncementDate;
-  }
+	@Override
+public String toString() {
+	return "Announcement [id=" + id + ", announcementName=" + announcementName + ", job=" + job + ", salary=" + salary
+			+ ", status=" + status + ", english=" + english + "]";
+}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(
-        announcementName, endAnnouncementDate, id, initialAnnouncementDate, job, salary, status);
-  }
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!(obj instanceof Announcement)) {
-      return false;
-    }
-    Announcement other = (Announcement) obj;
-    return Objects.equals(announcementName, other.announcementName)
-        && Objects.equals(endAnnouncementDate, other.endAnnouncementDate)
-        && Objects.equals(id, other.id)
-        && Objects.equals(initialAnnouncementDate, other.initialAnnouncementDate)
-        && job == other.job
-        && Objects.equals(salary, other.salary)
-        && status == other.status;
-  }
 
-  @Override
-  public String toString() {
-    return "Announcement [id="
-        + id
-        + ", announcementName="
-        + announcementName
-        + ", job="
-        + job
-        + ", salary="
-        + salary
-        + ", status="
-        + status
-        + ", initialAnnouncementDate="
-        + initialAnnouncementDate
-        + ", endAnnouncementDate="
-        + endAnnouncementDate
-        + "]";
-  }
+	private static final long serialVersionUID = 1L;
 }
