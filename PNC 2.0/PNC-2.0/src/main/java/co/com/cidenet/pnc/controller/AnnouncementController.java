@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -45,20 +44,25 @@ public class AnnouncementController {
   /*List all announcements */
 
   @GetMapping(value = "/announcements")
-	public ResponseEntity<List<Announcement>> getAnnouncements(@RequestParam Map<String, String> requestParams) 
-		throws HttpClientErrorException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, EntitiesFilterException, ObjectMapperException  {
-	    List<Announcement> announcement;
-	    Map<String, Object> response = new HashMap<>();
-	    try {
-	      announcement = announcementService.findAll();
-	    } catch (DataAccessException e) {
-	      response.put("Error", HttpStatus.INTERNAL_SERVER_ERROR);
-	      response.put("mensaje",Objects.requireNonNull(e.getMessage()).concat(": ") .concat(e.getMostSpecificCause().getMessage()));
-	      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	    }
-			return ResponseEntity.ok().body(announcementService.findAll());
-		}
-
+  public ResponseEntity<List<Announcement>> getAnnouncements(
+      @RequestParam Map<String, String> requestParams)
+      throws HttpClientErrorException, IllegalAccessException, IllegalArgumentException,
+          InvocationTargetException, EntitiesFilterException, ObjectMapperException {
+    List<Announcement> announcement;
+    Map<String, Object> response = new HashMap<>();
+    try {
+      announcement = announcementService.findAll();
+    } catch (DataAccessException e) {
+      response.put("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+      response.put(
+          "mensaje",
+          Objects.requireNonNull(e.getMessage())
+              .concat(": ")
+              .concat(e.getMostSpecificCause().getMessage()));
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    return ResponseEntity.ok().body(announcementService.findAll());
+  }
 
   /*list one announcement by ID, if the id didn't exist then return a error message*/
   @GetMapping("/announcement/{id}")
@@ -111,53 +115,57 @@ public class AnnouncementController {
     response.put("announcement", newAnnouncement);
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
-  
-	@PutMapping("/editannouncement/{id}")
-	public ResponseEntity<Map<String, Object>> update(@RequestBody Announcement announcement, @PathVariable Long id, BindingResult result) {
 
-		Announcement announcementActual = announcementService.findOneAnnouncement(id);
-		Announcement announcementUpdated = null;
+  @PutMapping("/editannouncement/{id}")
+  public ResponseEntity<Map<String, Object>> update(
+      @RequestBody Announcement announcement, @PathVariable Long id, BindingResult result) {
 
-		Map<String, Object> response = new HashMap<>();
+    Announcement announcementActual = announcementService.findOneAnnouncement(id);
+    Announcement announcementUpdated = null;
 
-		if(result.hasErrors()) {
+    Map<String, Object> response = new HashMap<>();
 
-			List<String> errors = result.getFieldErrors()
-					.stream()
-					.map(err -> "El campo '" + err.getField() +"' "+ err.getDefaultMessage())
-					.collect(Collectors.toList());
-			
-			response.put("errors", errors);
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
-		}
-		
-		if (announcementActual == null) {
-			response.put("mensaje", "Error: no se pudo editar, el cliente ID: "
-					.concat(id.toString().concat(" no existe en la base de datos!")));
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-		}
+    if (result.hasErrors()) {
 
-		try {
+      List<String> errors =
+          result.getFieldErrors().stream()
+              .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
+              .collect(Collectors.toList());
 
-			announcementActual.setAnnouncementName(announcement.getAnnouncementName());
-			announcementActual.setJob(announcement.getJob());
-			announcementActual.setSalary(announcement.getSalary());
-			announcementActual.setStatus(announcement.getStatus());
-			announcementActual.setEnglish(announcement.getEnglish());
+      response.put("errors", errors);
+      return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+    }
 
-			announcementUpdated = announcementService.save(announcementActual);
+    if (announcementActual == null) {
+      response.put(
+          "mensaje",
+          "Error: no se pudo editar, el cliente ID: "
+              .concat(id.toString().concat(" no existe en la base de datos!")));
+      return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+    }
 
-		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al actualizar el cliente en la base de datos");
-			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+    try {
 
-		response.put("mensaje", "El cliente ha sido actualizado con éxito!");
-		response.put("cliente", announcementUpdated);
+      announcementActual.setAnnouncementName(announcement.getAnnouncementName());
+      announcementActual.setJob(announcement.getJob());
+      announcementActual.setSalary(announcement.getSalary());
+      announcementActual.setStatus(announcement.getStatus());
+      announcementActual.setEnglish(announcement.getEnglish());
 
-		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
-	}
+      announcementUpdated = announcementService.save(announcementActual);
+
+    } catch (DataAccessException e) {
+      response.put("mensaje", "Error al actualizar el cliente en la base de datos");
+      response.put(
+          "error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+      return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    response.put("mensaje", "El cliente ha sido actualizado con éxito!");
+    response.put("cliente", announcementUpdated);
+
+    return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+  }
 
   /*delete one announcement */
   @DeleteMapping("/announcement/{id}")
