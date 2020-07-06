@@ -1,159 +1,207 @@
 /**
- * @author Jaime Mejia
- * @version 1.0
- * @since 5/07/2020
- */
+*
+* @author  Jaime Mejia
+* @version 1.0
+* @since   5/07/2020
+*/
 package co.com.cidenet.pnc.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
 
 @Entity
 @Table(name = "Candidate")
 public class Candidate {
 
-  enum ProgrammingLanguage {
-    JAVA,
-    PLSQL,
-    GROOVY,
-    SWIFT
-  }
+	enum ProgrammingLanguage {
+		    JAVA,
+		    PLSQL,
+		    GROOVY,
+		    SWIFT
+		  }
+	
+	  enum English {
+		    YES,
+		    NO
+		  }	
 
-  enum English {
-    YES,
-    NO
-  }
+	  @Id
+	  @GeneratedValue(strategy = GenerationType.IDENTITY)
+	  private Long id;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+	  @NotEmpty(message = "no puede estar vacio")
+	  @Column(nullable = false)
+	  private String candidateName;
+	  
+	  @Column(nullable = false)
+	  @Enumerated(value = EnumType.STRING)
+	  private ProgrammingLanguage programmingLanguage;	
+	  
+	  @Column(nullable = false)
+	  @Enumerated(value = EnumType.STRING)
+	  private English english;	 
+	  
+	  @Column(nullable = false)
+	  @Min(value = 0L, message = "El numero debe de ser positivo")
+	  private Integer salary;	
 
-  @NotEmpty(message = "no puede estar vacio")
-  @Column(nullable = false)
-  private String candidateName;
+	  @NotEmpty(message = "no puede estar vacio")
+	  @Column(nullable = false)
+	  private String softSkill;	  
 
-  @Column(nullable = false)
-  @Enumerated(value = EnumType.STRING)
-  private ProgrammingLanguage programmingLanguage;
+	  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	  @JoinColumn(name = "candidate_id")
+	  private List<ItemCandidate> announcement;
 
-  @Column(nullable = false)
-  @Enumerated(value = EnumType.STRING)
-  private English english;
+	  public Candidate() {
+	      announcement = new ArrayList<>();
+	  }
+	  
+	  /**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
 
-  @Column(nullable = false)
-  @Min(value = 0L, message = "El numero debe de ser positivo")
-  private Integer salary;
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-  /** @return the id */
-  public Long getId() {
-    return id;
-  }
+	/**
+	 * @return the candidateName
+	 */
+	public String getCandidateName() {
+		return candidateName;
+	}
 
-  /** @param id the id to set */
-  public void setId(Long id) {
-    this.id = id;
-  }
+	/**
+	 * @param candidateName the candidateName to set
+	 */
+	public void setCandidateName(String candidateName) {
+		this.candidateName = candidateName;
+	}
 
-  /** @return the candidateName */
-  public String getCandidateName() {
-    return candidateName;
-  }
+	/**
+	 * @return the programmingLanguage
+	 */
+	public ProgrammingLanguage getProgrammingLanguage() {
+		return programmingLanguage;
+	}
 
-  /** @param candidateName the candidateName to set */
-  public void setCandidateName(String candidateName) {
-    this.candidateName = candidateName;
-  }
+	/**
+	 * @param programmingLanguage the programmingLanguage to set
+	 */
+	public void setProgrammingLanguage(ProgrammingLanguage programmingLanguage) {
+		this.programmingLanguage = programmingLanguage;
+	}
 
-  /** @return the programmingLanguage */
-  public ProgrammingLanguage getProgrammingLanguage() {
-    return programmingLanguage;
-  }
+	/**
+	 * @return the english
+	 */
+	public English getEnglish() {
+		return english;
+	}
 
-  /** @param programmingLanguage the programmingLanguage to set */
-  public void setProgrammingLanguage(ProgrammingLanguage programmingLanguage) {
-    this.programmingLanguage = programmingLanguage;
-  }
+	/**
+	 * @param english the english to set
+	 */
+	public void setEnglish(English english) {
+		this.english = english;
+	}
 
-  /** @return the english */
-  public English getEnglish() {
-    return english;
-  }
+	/**
+	 * @return the salary
+	 */
+	public Integer getSalary() {
+		return salary;
+	}
 
-  /** @param english the english to set */
-  public void setEnglish(English english) {
-    this.english = english;
-  }
+	/**
+	 * @param salary the salary to set
+	 */
+	public void setSalary(Integer salary) {
+		this.salary = salary;
+	}
 
-  /** @return the salary */
-  public Integer getSalary() {
-    return salary;
-  }
+	/**
+	 * @return the softSkill
+	 */
+	public String getSoftSkill() {
+		return softSkill;
+	}
 
-  /** @param salary the salary to set */
-  public void setSalary(Integer salary) {
-    this.salary = salary;
-  }
+	/**
+	 * @param softSkill the softSkill to set
+	 */
+	public void setSoftSkill(String softSkill) {
+		this.softSkill = softSkill;
+	}
+	
+	public List<ItemCandidate> getItems() {
+	    return announcement;
+	}
 
-  /** @return the softSkill */
-  public String getSoftSkill() {
-    return softSkill;
-  }
+	public void setItems(List<ItemCandidate> items) {
+	    this.announcement = announcement;
+	}
 
-  /** @param softSkill the softSkill to set */
-  public void setSoftSkill(String softSkill) {
-    this.softSkill = softSkill;
-  }
+	public int getTotalAnnouncement() {
+	    int total = 0;
+	    for (ItemCandidate item : announcement) {
+	        total += 1;
+	    }
+	    return total;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(candidateName, english, id, programmingLanguage, salary, softSkill);
+	}
 
-  @NotEmpty(message = "no puede estar vacio")
-  @Column(nullable = false)
-  private String softSkill;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Candidate)) {
+			return false;
+		}
+		Candidate other = (Candidate) obj;
+		return Objects.equals(candidateName, other.candidateName) && english == other.english
+				&& Objects.equals(id, other.id) && programmingLanguage == other.programmingLanguage
+				&& Objects.equals(salary, other.salary) && Objects.equals(softSkill, other.softSkill);
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(candidateName, english, id, programmingLanguage, salary, softSkill);
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!(obj instanceof Candidate)) {
-      return false;
-    }
-    Candidate other = (Candidate) obj;
-    return Objects.equals(candidateName, other.candidateName)
-        && english == other.english
-        && Objects.equals(id, other.id)
-        && programmingLanguage == other.programmingLanguage
-        && Objects.equals(salary, other.salary)
-        && Objects.equals(softSkill, other.softSkill);
-  }
-
-  @Override
-  public String toString() {
-    return "Candidate [id="
-        + id
-        + ", candidateName="
-        + candidateName
-        + ", programmingLanguage="
-        + programmingLanguage
-        + ", english="
-        + english
-        + ", salary="
-        + salary
-        + ", softSkill="
-        + softSkill
-        + "]";
-  }
+	@Override
+	public String toString() {
+		return "Candidate [id=" + id + ", candidateName=" + candidateName + ", programmingLanguage="
+				+ programmingLanguage + ", english=" + english + ", salary=" + salary + ", softSkill=" + softSkill
+				+ "]";
+	}	  
 }
+
+
