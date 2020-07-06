@@ -1,9 +1,8 @@
 /**
-*
-* @author  Jaime Mejia
-* @version 1.0
-* @since   5/07/2020
-*/
+ * @author Jaime Mejia
+ * @version 1.0
+ * @since 5/07/2020
+ */
 package co.com.cidenet.pnc.service;
 
 import java.util.List;
@@ -20,41 +19,39 @@ import co.com.cidenet.pnc.repository.CandidateRepository;
 
 @Service
 public class CandidateServiceImplement implements InterfaceCandidateService {
-	  
-	@Autowired private CandidateRepository candidateRepository;
 
-	  public CandidateServiceImplement(CandidateRepository candidateRepository) {
-	    this.candidateRepository = candidateRepository;
-	  }
+  @Autowired private CandidateRepository candidateRepository;
 
-	  @Override
-	  @Transactional
-	  public List<Candidate> findAll() {
-	    return (List<Candidate>) candidateRepository.findAll();
-	  }
+  public CandidateServiceImplement(CandidateRepository candidateRepository) {
+    this.candidateRepository = candidateRepository;
+  }
 
-	  @Override
-	  @Transactional
-	  public Candidate save(Candidate candidate) {
-	    return candidateRepository.save(candidate);
-	  }
+  @Override
+  @Transactional
+  public List<Candidate> findAll() {
+    return (List<Candidate>) candidateRepository.findAll();
+  }
 
-	  @Override
-	  // @Transactional(readOnly = true)
-	  public Candidate findOneCandidate(Long id) {
-	    return candidateRepository.findById(id).orElse(null);
-	  }
+  @Override
+  @Transactional
+  public Candidate save(Candidate candidate) {
+    return candidateRepository.save(candidate);
+  }
 
-	  @Override
-	  public void deleteCandidate(Long id) {
-	    candidateRepository.deleteById(id);
-	  }
+  @Override
+  // @Transactional(readOnly = true)
+  public Candidate findOneCandidate(Long id) {
+    return candidateRepository.findById(id).orElse(null);
+  }
 
-	  public Object listErrors(BindingResult result) {
-	    return result.getFieldErrors().stream()
-	        .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
-	        .collect(Collectors.toList());
-	  }
+  @Override
+  public void deleteCandidate(Long id) {
+    candidateRepository.deleteById(id);
+  }
+
+  public Object listErrors(BindingResult result) {
+    return result.getFieldErrors().stream()
+        .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
+        .collect(Collectors.toList());
+  }
 }
-
-
