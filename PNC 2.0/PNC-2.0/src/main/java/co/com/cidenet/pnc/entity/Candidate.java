@@ -19,6 +19,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
@@ -27,7 +28,7 @@ import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "Candidate")
+@Table(name = "Candidates")
 public class Candidate {
 
   enum ProgrammingLanguage {
@@ -48,7 +49,15 @@ public class Candidate {
 
   @NotEmpty(message = "no puede estar vacio")
   @Column(nullable = false)
-  private String candidateName;
+  private String firstName;
+  
+  @NotEmpty(message = "no puede estar vacio")
+  @Column(nullable = false)
+  private String lastName;
+  
+  @NotEmpty(message = "no puede estar vacio")
+  @Column(nullable = false)
+  private String email;
 
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
@@ -66,127 +75,161 @@ public class Candidate {
   @Column(nullable = false)
   private String softSkill;
 
-  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinColumn(name = "candidate_id")
-  private List<ItemCandidate> announcement;
+  @ManyToMany(mappedBy = "candidates")
+  private List<Announcement> announcements;
 
-  public Candidate() {
-    announcement = new ArrayList<>();
-  }
+/**
+ * @return the id
+ */
+public Long getId() {
+	return id;
+}
 
-  /** @return the id */
-  public Long getId() {
-    return id;
-  }
+/**
+ * @param id the id to set
+ */
+public void setId(Long id) {
+	this.id = id;
+}
 
-  /** @param id the id to set */
-  public void setId(Long id) {
-    this.id = id;
-  }
+/**
+ * @return the firstName
+ */
+public String getFirstName() {
+	return firstName;
+}
 
-  /** @return the candidateName */
-  public String getCandidateName() {
-    return candidateName;
-  }
+/**
+ * @param firstName the firstName to set
+ */
+public void setFirstName(String firstName) {
+	this.firstName = firstName;
+}
 
-  /** @param candidateName the candidateName to set */
-  public void setCandidateName(String candidateName) {
-    this.candidateName = candidateName;
-  }
+/**
+ * @return the lastName
+ */
+public String getLastName() {
+	return lastName;
+}
 
-  /** @return the programmingLanguage */
-  public ProgrammingLanguage getProgrammingLanguage() {
-    return programmingLanguage;
-  }
+/**
+ * @param lastName the lastName to set
+ */
+public void setLastName(String lastName) {
+	this.lastName = lastName;
+}
 
-  /** @param programmingLanguage the programmingLanguage to set */
-  public void setProgrammingLanguage(ProgrammingLanguage programmingLanguage) {
-    this.programmingLanguage = programmingLanguage;
-  }
+/**
+ * @return the email
+ */
+public String getEmail() {
+	return email;
+}
 
-  /** @return the english */
-  public English getEnglish() {
-    return english;
-  }
+/**
+ * @param email the email to set
+ */
+public void setEmail(String email) {
+	this.email = email;
+}
 
-  /** @param english the english to set */
-  public void setEnglish(English english) {
-    this.english = english;
-  }
+/**
+ * @return the programmingLanguage
+ */
+public ProgrammingLanguage getProgrammingLanguage() {
+	return programmingLanguage;
+}
 
-  /** @return the salary */
-  public Integer getSalary() {
-    return salary;
-  }
+/**
+ * @param programmingLanguage the programmingLanguage to set
+ */
+public void setProgrammingLanguage(ProgrammingLanguage programmingLanguage) {
+	this.programmingLanguage = programmingLanguage;
+}
 
-  /** @param salary the salary to set */
-  public void setSalary(Integer salary) {
-    this.salary = salary;
-  }
+/**
+ * @return the english
+ */
+public English getEnglish() {
+	return english;
+}
 
-  /** @return the softSkill */
-  public String getSoftSkill() {
-    return softSkill;
-  }
+/**
+ * @param english the english to set
+ */
+public void setEnglish(English english) {
+	this.english = english;
+}
 
-  /** @param softSkill the softSkill to set */
-  public void setSoftSkill(String softSkill) {
-    this.softSkill = softSkill;
-  }
+/**
+ * @return the salary
+ */
+public Integer getSalary() {
+	return salary;
+}
 
-  public List<ItemCandidate> getItems() {
-    return announcement;
-  }
+/**
+ * @param salary the salary to set
+ */
+public void setSalary(Integer salary) {
+	this.salary = salary;
+}
 
-  public void setItems(List<ItemCandidate> items) {
-    this.announcement = announcement;
-  }
+/**
+ * @return the softSkill
+ */
+public String getSoftSkill() {
+	return softSkill;
+}
 
-  public int getTotalAnnouncement() {
-    int total = 0;
-    for (ItemCandidate item : announcement) {
-      total += 1;
-    }
-    return total;
-  }
+/**
+ * @param softSkill the softSkill to set
+ */
+public void setSoftSkill(String softSkill) {
+	this.softSkill = softSkill;
+}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(candidateName, english, id, programmingLanguage, salary, softSkill);
-  }
+/**
+ * @return the announcements
+ */
+public List<Announcement> getAnnouncements() {
+	return announcements;
+}
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!(obj instanceof Candidate)) {
-      return false;
-    }
-    Candidate other = (Candidate) obj;
-    return Objects.equals(candidateName, other.candidateName)
-        && english == other.english
-        && Objects.equals(id, other.id)
-        && programmingLanguage == other.programmingLanguage
-        && Objects.equals(salary, other.salary)
-        && Objects.equals(softSkill, other.softSkill);
-  }
+/**
+ * @param announcements the announcements to set
+ */
+public void setAnnouncements(List<Announcement> announcements) {
+	this.announcements = announcements;
+}
 
-  @Override
-  public String toString() {
-    return "Candidate [id="
-        + id
-        + ", candidateName="
-        + candidateName
-        + ", programmingLanguage="
-        + programmingLanguage
-        + ", english="
-        + english
-        + ", salary="
-        + salary
-        + ", softSkill="
-        + softSkill
-        + "]";
-  }
+@Override
+public int hashCode() {
+	return Objects.hash(announcements, email, english, firstName, id, lastName, programmingLanguage, salary, softSkill);
+}
+
+@Override
+public boolean equals(Object obj) {
+	if (this == obj) {
+		return true;
+	}
+	if (!(obj instanceof Candidate)) {
+		return false;
+	}
+	Candidate other = (Candidate) obj;
+	return Objects.equals(announcements, other.announcements) && Objects.equals(email, other.email)
+			&& english == other.english && Objects.equals(firstName, other.firstName) && Objects.equals(id, other.id)
+			&& Objects.equals(lastName, other.lastName) && programmingLanguage == other.programmingLanguage
+			&& Objects.equals(salary, other.salary) && Objects.equals(softSkill, other.softSkill);
+}
+
+@Override
+public String toString() {
+	return "Candidate [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+			+ ", programmingLanguage=" + programmingLanguage + ", english=" + english + ", salary=" + salary
+			+ ", softSkill=" + softSkill + ", announcements=" + announcements + "]";
+}
+
+
 }

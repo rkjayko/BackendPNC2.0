@@ -149,7 +149,9 @@ public class CandidateController {
 
     try {
 
-      candidateActual.setCandidateName(candidate.getCandidateName());
+      candidateActual.setFirstName(candidate.getFirstName());
+      candidateActual.setLastName(candidate.getLastName());
+      candidateActual.setEmail(candidate.getEmail());
       candidateActual.setProgrammingLanguage(candidate.getProgrammingLanguage());
       candidateActual.setSalary(candidate.getSalary());
       candidateActual.setEnglish(candidate.getEnglish());

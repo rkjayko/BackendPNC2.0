@@ -14,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -27,7 +29,7 @@ Created by : Jaime Mejia
 */
 
 @Entity
-@Table(name = "Announcement")
+@Table(name = "Announcements")
 public class Announcement {
 
   enum Job {
@@ -71,14 +73,21 @@ public class Announcement {
   @Enumerated(value = EnumType.STRING)
   private English english;
 
-  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinColumn(name = "announcement_id")
-  private List<ItemAnnouncement> candidate;
-
-  public Announcement() {
-    candidate = new ArrayList<>();
-  }
+  @JoinTable(
+		  name = "rel_announcements_candidates",
+	      joinColumns = @JoinColumn(name = "FK_ANNOUNCEMENT", nullable = false),
+	      inverseJoinColumns = @JoinColumn(name="FK_CANDIDATE", nullable = false)
+  )
+	    @ManyToMany(cascade = CascadeType.ALL)
+	    private List<Candidate> candidates;
+	   
+	    public void addAuthor(Candidate candidate){
+	        if(this.candidates == null){
+	            this.candidates = new ArrayList<>();
+	        }
+	        
+	        this.candidates.add(candidate);
+	    }
 
   /** @return the id */
   public Long getId() {
@@ -131,17 +140,17 @@ public class Announcement {
     this.english = english;
   }
 
-  public List<ItemAnnouncement> getItems() {
-    return candidate;
+  public List<Candidate> getItems() {
+    return candidates;
   }
 
-  public void setItems(List<ItemAnnouncement> items) {
-    this.candidate = candidate;
+  public void setItems(List<Candidate> items) {
+    this.candidates = candidates;
   }
 
   public int getTotalCandidate() {
     int total = 0;
-    for (ItemAnnouncement item : candidate) {
+    for (Candidate item : candidates) {
       total += 1;
     }
     return total;
