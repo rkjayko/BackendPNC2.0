@@ -9,20 +9,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /*
 Created by : Jaime Mejia
@@ -74,20 +71,19 @@ public class Announcement {
   private English english;
 
   @JoinTable(
-		  name = "rel_announcements_candidates",
-	      joinColumns = @JoinColumn(name = "FK_ANNOUNCEMENT", nullable = false),
-	      inverseJoinColumns = @JoinColumn(name="FK_CANDIDATE", nullable = false)
-  )
-	    @ManyToMany(cascade = CascadeType.ALL)
-	    private List<Candidate> candidates;
-	   
-	    public void addAuthor(Candidate candidate){
-	        if(this.candidates == null){
-	            this.candidates = new ArrayList<>();
-	        }
-	        
-	        this.candidates.add(candidate);
-	    }
+      name = "rel_announcements_candidates",
+      joinColumns = @JoinColumn(name = "FK_ANNOUNCEMENT", nullable = false),
+      inverseJoinColumns = @JoinColumn(name = "FK_CANDIDATE", nullable = false))
+  @ManyToMany(cascade = CascadeType.ALL)
+  private List<Candidate> candidates;
+
+  public void addAuthor(Candidate candidate) {
+    if (this.candidates == null) {
+      this.candidates = new ArrayList<>();
+    }
+
+    this.candidates.add(candidate);
+  }
 
   /** @return the id */
   public Long getId() {
