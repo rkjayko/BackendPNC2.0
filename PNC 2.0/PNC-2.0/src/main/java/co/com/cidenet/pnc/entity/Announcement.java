@@ -143,14 +143,6 @@ public class Announcement {
     this.candidates = candidates;
   }
 
-  public int getTotalCandidate() {
-    int total = 0;
-    for (Candidate item : candidates) {
-      total += 1;
-    }
-    return total;
-  }
-
   @Override
   public int hashCode() {
     return Objects.hash(announcementName, english, id, job, salary, status);

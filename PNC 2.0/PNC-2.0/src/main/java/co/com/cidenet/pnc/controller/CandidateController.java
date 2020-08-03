@@ -108,7 +108,7 @@ public class CandidateController {
     }
     response.put(Constants.STATUS, Constants.SUCCESSFULL);
     response.put(Constants.MESSAGE, Constants.CREATE_CANDIDATE);
-    response.put(Constants.CANDIDATE, newCandidate);
+    response.put("candidate", newCandidate);
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
 

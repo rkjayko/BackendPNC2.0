@@ -107,13 +107,13 @@ public class AnnouncementController {
     }
     response.put(Constants.STATUS, Constants.SUCCESSFULL);
     response.put(Constants.MESSAGE, Constants.CREATE_ANNOUNCEMENT);
-    response.put(Constants.ANNOUNCEMENT, newAnnouncement);
+    response.put("announcement", newAnnouncement);
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
 
   @PutMapping("/editannouncement/{id}")
   public ResponseEntity<Map<String, Object>> update(
-      @RequestBody Announcement announcement, @PathVariable Long id, BindingResult result) {
+		   @RequestBody Announcement announcement, @PathVariable Long id, BindingResult result) {
 
     Announcement announcementActual = announcementService.findOneAnnouncement(id);
     Announcement announcementUpdated = null;
