@@ -136,11 +136,11 @@ public class Announcement {
     this.english = english;
   }
 
-  public List<Candidate> getItems() {
+  public List<Candidate> getCandidates() {
     return candidates;
   }
 
-  public void setItems(List<Candidate> items) {
+  public void setCandidates(List<Candidate> candidates) {
     this.candidates = candidates;
   }
 
