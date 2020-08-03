@@ -20,7 +20,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
-
 @Entity
 @Table(name = "Candidates")
 public class Candidate {

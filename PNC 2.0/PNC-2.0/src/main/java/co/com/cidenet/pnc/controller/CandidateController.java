@@ -43,14 +43,18 @@ public class CandidateController {
   /*List all candidates */
 
   @GetMapping(value = "/candidates")
-  public ResponseEntity<List<Candidate>> getCandidates(@RequestParam Map<String, String> requestParams){
+  public ResponseEntity<List<Candidate>> getCandidates(
+      @RequestParam Map<String, String> requestParams) {
     Map<String, Object> response = new HashMap<>();
     try {
-    	candidateService.findAll();
+      candidateService.findAll();
     } catch (DataAccessException e) {
       response.put("Error", HttpStatus.INTERNAL_SERVER_ERROR);
-      response.put( Constants.MESSAGE,
-    		  Objects.requireNonNull(e.getMessage()).concat(": ").concat(e.getMostSpecificCause().getMessage()));
+      response.put(
+          Constants.MESSAGE,
+          Objects.requireNonNull(e.getMessage())
+              .concat(": ")
+              .concat(e.getMostSpecificCause().getMessage()));
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
     return ResponseEntity.ok().body(candidateService.findAll());
@@ -62,15 +66,20 @@ public class CandidateController {
     Candidate candidate;
     Map<String, Object> response = new HashMap<>();
     try {
-    	candidate = candidateService.findOneCandidate(id);
+      candidate = candidateService.findOneCandidate(id);
     } catch (DataAccessException e) {
-    	response.put(Constants.MESSAGE, HttpStatus.INTERNAL_SERVER_ERROR);
-    	response.put( Constants.ERROR,Objects.requireNonNull(e.getMessage()).concat(": ")
-    			.concat(e.getMostSpecificCause().getMessage()));
+      response.put(Constants.MESSAGE, HttpStatus.INTERNAL_SERVER_ERROR);
+      response.put(
+          Constants.ERROR,
+          Objects.requireNonNull(e.getMessage())
+              .concat(": ")
+              .concat(e.getMostSpecificCause().getMessage()));
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
     if (candidate == null) {
-      response.put(Constants.MESSAGE,Constants.CANDIDATE_ID.concat(id.toString().concat(Constants.MSG_ERROR_NOT_EXIST)));
+      response.put(
+          Constants.MESSAGE,
+          Constants.CANDIDATE_ID.concat(id.toString().concat(Constants.MSG_ERROR_NOT_EXIST)));
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     return new ResponseEntity<>(candidate, HttpStatus.OK);
@@ -78,45 +87,54 @@ public class CandidateController {
 
   /*Create one candidate, it verify if the data are valid or if exist a connection to database, else save the candidate*/
   @PostMapping(value = "/createcandidate")
-  public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody Candidate candidate, BindingResult result) {
+  public ResponseEntity<Map<String, Object>> create(
+      @Valid @RequestBody Candidate candidate, BindingResult result) {
     Candidate newCandidate;
     Map<String, Object> response = new HashMap<>();
     if (result.hasErrors()) {
-    	response.put(Constants.ERROR, candidateService.listErrors(result));
-    	return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+      response.put(Constants.ERROR, candidateService.listErrors(result));
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
     try {
-    	newCandidate = candidateService.save(candidate);
+      newCandidate = candidateService.save(candidate);
     } catch (DataAccessException e) {
-    	response.put(Constants.MESSAGE, Constants.MSG_ERROR_DATABASE);
-    	response.put(Constants.ERROR,Objects.requireNonNull(e.getMessage()).concat(": ")
+      response.put(Constants.MESSAGE, Constants.MSG_ERROR_DATABASE);
+      response.put(
+          Constants.ERROR,
+          Objects.requireNonNull(e.getMessage())
+              .concat(": ")
               .concat(e.getMostSpecificCause().getMessage()));
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     response.put(Constants.STATUS, Constants.SUCCESSFULL);
-    response.put(Constants.MESSAGE,Constants.CREATE_CANDIDATE);
+    response.put(Constants.MESSAGE, Constants.CREATE_CANDIDATE);
     response.put(Constants.CANDIDATE, newCandidate);
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
 
   @PutMapping("/editcandidate/{id}")
-  public ResponseEntity<Map<String, Object>> update(@RequestBody Candidate candidate, @PathVariable Long id, BindingResult result) {
+  public ResponseEntity<Map<String, Object>> update(
+      @RequestBody Candidate candidate, @PathVariable Long id, BindingResult result) {
 
     Candidate candidateActual = candidateService.findOneCandidate(id);
     Candidate candidateUpdated = null;
     Map<String, Object> response = new HashMap<>();
 
     if (result.hasErrors()) {
-    	List<String> errors =result.getFieldErrors().stream()
-    		  .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage()).collect(Collectors.toList());
-    	response.put(Constants.ERROR, errors);
-    	return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+      List<String> errors =
+          result.getFieldErrors().stream()
+              .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
+              .collect(Collectors.toList());
+      response.put(Constants.ERROR, errors);
+      return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
     }
 
     if (candidateActual == null) {
-    	response.put(
-    		  Constants.ERROR,Constants.ERROR_EDITING_CANDIDATE.concat(id.toString().concat(Constants.MSG_ERROR_NOT_EXIST)));
-    	return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+      response.put(
+          Constants.ERROR,
+          Constants.ERROR_EDITING_CANDIDATE.concat(
+              id.toString().concat(Constants.MSG_ERROR_NOT_EXIST)));
+      return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
     }
 
     try {
@@ -131,12 +149,14 @@ public class CandidateController {
       candidateUpdated = candidateService.save(candidateActual);
 
     } catch (DataAccessException e) {
-      response.put(Constants.MESSAGE,Constants.MSG_ERROR_DATABASE);
-      response.put(Constants.ERROR, e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+      response.put(Constants.MESSAGE, Constants.MSG_ERROR_DATABASE);
+      response.put(
+          Constants.ERROR,
+          e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
       return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    response.put(Constants.MESSAGE,Constants.EDIT_CANDIDATE);
+    response.put(Constants.MESSAGE, Constants.EDIT_CANDIDATE);
     response.put(Constants.CANDIDATE, candidateUpdated);
 
     return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
@@ -150,7 +170,7 @@ public class CandidateController {
     try {
       candidateService.deleteCandidate(id);
     } catch (DataAccessException e) {
-      response.put(Constants.ERROR,Constants.MSG_ERROR_DATABASE);
+      response.put(Constants.ERROR, Constants.MSG_ERROR_DATABASE);
       response.put(
           Constants.ERROR,
           Objects.requireNonNull(e.getMessage())
