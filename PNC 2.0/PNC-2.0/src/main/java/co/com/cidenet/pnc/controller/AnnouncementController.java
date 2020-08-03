@@ -113,7 +113,7 @@ public class AnnouncementController {
 
   @PutMapping("/editannouncement/{id}")
   public ResponseEntity<Map<String, Object>> update(
-		   @RequestBody Announcement announcement, @PathVariable Long id, BindingResult result) {
+      @RequestBody Announcement announcement, @PathVariable Long id, BindingResult result) {
 
     Announcement announcementActual = announcementService.findOneAnnouncement(id);
     Announcement announcementUpdated = null;
