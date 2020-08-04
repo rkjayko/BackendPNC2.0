@@ -28,19 +28,19 @@ Created by : Jaime Mejia
 @Table(name = "Announcements")
 public class Announcement {
 
-  enum Job {
+  public enum Job {
     JAVA,
     PLSQL,
     GROOVY,
     SWIFT
   }
 
-  enum Status {
+  public enum Status {
     OPEN,
     CLOSED
   }
 
-  enum English {
+  public enum English {
     YES,
     NO
   }
@@ -142,7 +142,7 @@ public class Announcement {
   public void setCandidates(List<Candidate> candidates) {
     this.candidates = candidates;
   }
-
+    
   @Override
   public int hashCode() {
     return Objects.hash(announcementName, english, id, job, salary, status);

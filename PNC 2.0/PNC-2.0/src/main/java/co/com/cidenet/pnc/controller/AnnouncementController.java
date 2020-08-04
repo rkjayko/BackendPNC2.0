@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.NestedRuntimeException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,7 @@ import co.com.cidenet.pnc.utils.Constants;
 public class AnnouncementController {
 
   @Autowired private InterfaceAnnouncementService announcementService;
+  static final Logger logger = Logger.getLogger(AnnouncementController.class);
 
   /*List all announcements */
 
@@ -47,6 +50,7 @@ public class AnnouncementController {
     try {
       announcementService.findAll();
     } catch (DataAccessException e) {
+      logger.error(e);	
       response.put(Constants.ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
       response.put(
           Constants.MESSAGE,
@@ -64,21 +68,23 @@ public class AnnouncementController {
     Announcement announcement;
     Map<String, Object> response = new HashMap<>();
     try {
-      announcement = announcementService.findOneAnnouncement(id);
+    	announcement = announcementService.findOneAnnouncement(id);
     } catch (DataAccessException e) {
-      response.put(Constants.MESSAGE, HttpStatus.INTERNAL_SERVER_ERROR);
-      response.put(
+    	logger.error(e);		
+    	response.put(Constants.MESSAGE, HttpStatus.INTERNAL_SERVER_ERROR);
+    	response.put(
           Constants.ERROR,
           Objects.requireNonNull(e.getMessage())
               .concat(": ")
               .concat(e.getMostSpecificCause().getMessage()));
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    	return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
     if (announcement == null) {
-      response.put(
+    	logger.error(announcement);	
+    	response.put(
           Constants.MESSAGE,
           Constants.ANNOUNCEMENT_ID.concat(id.toString().concat(Constants.MSG_ERROR_NOT_EXIST)));
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    	return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     return new ResponseEntity<>(announcement, HttpStatus.OK);
   }
@@ -95,8 +101,11 @@ public class AnnouncementController {
       return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
     try {
-      newAnnouncement = announcementService.save(announcement);
+      announcementService.isValidSalary(announcement);
+      announcementService.isValidEnglish(announcement);
+      newAnnouncement = announcementService.save(announcement);   
     } catch (DataAccessException e) {
+      logger.error(e);		
       response.put(Constants.MESSAGE, Constants.MSG_ERROR_DATABASE);
       response.put(
           Constants.ERROR,
@@ -105,6 +114,12 @@ public class AnnouncementController {
               .concat(e.getMostSpecificCause().getMessage()));
       return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    catch (Exception e) {
+        logger.error(e);		
+        response.put(Constants.ERROR,Objects.requireNonNull(e.getMessage()));
+        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+      }    
+    
     response.put(Constants.STATUS, Constants.SUCCESSFULL);
     response.put(Constants.MESSAGE, Constants.CREATE_ANNOUNCEMENT);
     response.put("announcement", newAnnouncement);
@@ -113,49 +128,51 @@ public class AnnouncementController {
 
   @PutMapping("/editannouncement/{id}")
   public ResponseEntity<Map<String, Object>> update(
-      @RequestBody Announcement announcement, @PathVariable Long id, BindingResult result) {
+		  @Valid @RequestBody Announcement announcement, BindingResult result, @PathVariable Long id) {
 
     Announcement announcementActual = announcementService.findOneAnnouncement(id);
-    Announcement announcementUpdated = null;
+    Announcement announcementUpdated;
     Map<String, Object> response = new HashMap<>();
     if (result.hasErrors()) {
-      List<String> errors =
-          result.getFieldErrors().stream()
-              .map(err -> Constants.FIELD + err.getField() + " " + err.getDefaultMessage())
-              .collect(Collectors.toList());
-      response.put(Constants.ERROR, errors);
-      return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+        response.put("esta fallando aca", announcementService.listErrors(result));
+        logger.error(response);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     if (announcementActual == null) {
-      response.put(
-          Constants.MESSAGE,
-          Constants.ERROR_EDITING_CANDIDATE.concat(
-              id.toString().concat(Constants.MSG_ERROR_NOT_EXIST)));
-      return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+      response.put(Constants.MESSAGE,Constants.ERROR_EDITING_CANDIDATE.concat(
+      id.toString().concat(Constants.MSG_ERROR_NOT_EXIST)));
+      logger.error(response);
+      return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     try {
-      announcementActual.setAnnouncementName(announcement.getAnnouncementName());
-      announcementActual.setJob(announcement.getJob());
-      announcementActual.setSalary(announcement.getSalary());
-      announcementActual.setStatus(announcement.getStatus());
-      announcementActual.setEnglish(announcement.getEnglish());
+        if (announcementService.isValidSalary(announcement) && announcementService.isValidEnglish(announcement)){
+            announcementActual.setAnnouncementName(announcement.getAnnouncementName());
+            announcementActual.setJob(announcement.getJob());
+            announcementActual.setSalary(announcement.getSalary());
+            announcementActual.setStatus(announcement.getStatus());
+            announcementActual.setEnglish(announcement.getEnglish());
 
-      announcementUpdated = announcementService.save(announcementActual);
+            announcementUpdated = announcementService.save(announcementActual);
+        } else {
+            response.put(Constants.ERROR,Constants.VALIDATE_FIELDS);
+            logger.error(response);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }    	
 
     } catch (DataAccessException e) {
+      logger.error(e);		
       response.put(Constants.MESSAGE, Constants.ERROR_EDITING_CANDIDATE);
-      response.put(
-          Constants.ERROR,
+      response.put(Constants.ERROR,
           e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
-      return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     response.put(Constants.MESSAGE, Constants.EDIT_CANDIDATE);
     response.put(Constants.ANNOUNCEMENT, announcementUpdated);
 
-    return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+    return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
 
   /*delete one announcement */
@@ -166,6 +183,7 @@ public class AnnouncementController {
     try {
       announcementService.deleteAnnouncement(id);
     } catch (DataAccessException e) {
+      logger.error(e);		
       response.put(Constants.ERROR, Constants.MSG_ERROR_DATABASE);
       response.put(
           Constants.ERROR,
