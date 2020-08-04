@@ -142,7 +142,7 @@ public class Announcement {
   public void setCandidates(List<Candidate> candidates) {
     this.candidates = candidates;
   }
-    
+
   @Override
   public int hashCode() {
     return Objects.hash(announcementName, english, id, job, salary, status);

@@ -11,7 +11,8 @@ public final class Constants {
   public static final String MSG_ERROR_DATABASE = "Error en base de datos";
   public static final String MSG_ERROR_NOT_EXIST = "No existe en la base de datos";
   public static final String STATUS = "status";
-  public static final String CONNECTION_ERROR ="An error has occur when it was connecting with service:";
+  public static final String CONNECTION_ERROR =
+      "An error has occur when it was connecting with service:";
   public static final String FIELDS_ERROR = "fields should not be empty";
   public static final String JSON_ERROR = "JSON format has an error: ";
   public static final String ANNOUNCEMENT = "Anuncio:";

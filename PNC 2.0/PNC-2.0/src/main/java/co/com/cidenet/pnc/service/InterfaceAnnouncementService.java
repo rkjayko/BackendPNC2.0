@@ -17,9 +17,9 @@ public interface InterfaceAnnouncementService {
   Announcement findOneAnnouncement(Long id);
 
   void deleteAnnouncement(Long id);
-  
+
   boolean isValidSalary(Announcement announcement);
-  
+
   boolean isValidEnglish(Announcement announcement);
 
   Object listErrors(BindingResult result);

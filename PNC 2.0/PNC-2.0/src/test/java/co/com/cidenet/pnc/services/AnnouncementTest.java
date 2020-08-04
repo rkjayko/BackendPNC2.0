@@ -3,7 +3,6 @@ package co.com.cidenet.pnc.services;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.io.ObjectInputFilter.Status;
 import java.util.Optional;
 
 import co.com.cidenet.pnc.entity.Announcement;
@@ -40,40 +39,41 @@ public class AnnouncementTest {
     verify(announcementRepository, times(1)).save(announcementOne);
     assertNotNull(announcementFinal);
   }
-  
+
   @Test
   public void findAnnouncementByIdAnnouncementExistTest() {
-	  Announcement announcementSaved = new Announcement();
-	  announcementSaved.setAnnouncementName("Testing Announcement");
-	  announcementSaved.setId(1L);
-	  announcementSaved.setEnglish(English.YES);
-	  announcementSaved.setJob(Job.JAVA);
-	  announcementSaved.setSalary(90000);
-      when(announcementRepository.findById(announcementSaved.getId())).thenReturn(Optional.of(announcementSaved));
-      Announcement productTest = announcementService.findOneAnnouncement(announcementSaved.getId());
-      verify(announcementRepository, times(1)).findById(announcementSaved.getId());
-      assertEquals(announcementSaved, productTest);
-  } 
-  
-  @Test(expected = IllegalArgumentException.class) 
-  public void createAnnouncementWithSalaryInvalidTest(){
-	  Announcement announcementSaved = new Announcement();
-	  announcementSaved.setAnnouncementName("Testing Announcement");
-	  announcementSaved.setId(1L);
-	  announcementSaved.setEnglish(English.YES);
-	  announcementSaved.setJob(Job.JAVA);
-	  announcementSaved.setSalary(900000000);
-      announcementService.isValidSalary(announcementSaved);
+    Announcement announcementSaved = new Announcement();
+    announcementSaved.setAnnouncementName("Testing Announcement");
+    announcementSaved.setId(1L);
+    announcementSaved.setEnglish(English.YES);
+    announcementSaved.setJob(Job.JAVA);
+    announcementSaved.setSalary(90000);
+    when(announcementRepository.findById(announcementSaved.getId()))
+        .thenReturn(Optional.of(announcementSaved));
+    Announcement productTest = announcementService.findOneAnnouncement(announcementSaved.getId());
+    verify(announcementRepository, times(1)).findById(announcementSaved.getId());
+    assertEquals(announcementSaved, productTest);
   }
-  
-  @Test(expected = IllegalArgumentException.class) 
-  public void createAnnouncementWithEnglishInvalidTest(){
-	  Announcement announcementSaved = new Announcement();
-	  announcementSaved.setAnnouncementName("Testing Announcement");
-	  announcementSaved.setId(1L);
-	  announcementSaved.setEnglish(English.NO);
-	  announcementSaved.setJob(Job.SWIFT);
-	  announcementSaved.setSalary(1000000);
-      announcementService.isValidEnglish(announcementSaved);
-  }  
+
+  @Test(expected = IllegalArgumentException.class)
+  public void createAnnouncementWithSalaryInvalidTest() {
+    Announcement announcementSaved = new Announcement();
+    announcementSaved.setAnnouncementName("Testing Announcement");
+    announcementSaved.setId(1L);
+    announcementSaved.setEnglish(English.YES);
+    announcementSaved.setJob(Job.JAVA);
+    announcementSaved.setSalary(900000000);
+    announcementService.isValidSalary(announcementSaved);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void createAnnouncementWithEnglishInvalidTest() {
+    Announcement announcementSaved = new Announcement();
+    announcementSaved.setAnnouncementName("Testing Announcement");
+    announcementSaved.setId(1L);
+    announcementSaved.setEnglish(English.NO);
+    announcementSaved.setJob(Job.SWIFT);
+    announcementSaved.setSalary(1000000);
+    announcementService.isValidEnglish(announcementSaved);
+  }
 }

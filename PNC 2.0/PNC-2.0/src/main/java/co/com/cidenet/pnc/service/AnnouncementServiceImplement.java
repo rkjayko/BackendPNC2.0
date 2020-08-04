@@ -49,27 +49,28 @@ public class AnnouncementServiceImplement implements InterfaceAnnouncementServic
   public void deleteAnnouncement(Long id) {
     announcementRepository.deleteById(id);
   }
-  
-  //@Transactional(readOnly = true)
+
+  // @Transactional(readOnly = true)
   public boolean isValidSalary(Announcement announcement) {
-	    Map<String, Object> response = new HashMap<>();
-	  if((announcement.getSalary() < 1000000  && announcement.getJob() == Job.JAVA) 
-			  || (announcement.getSalary() < 2000000 && announcement.getJob() == Job.PLSQL)
-			  || (announcement.getSalary() < 3000000 && announcement.getJob() == Job.GROOVY)
-			  || (announcement.getSalary() < 3000000 && announcement.getJob() == Job.SWIFT)) {
-		  return true;
-	  }
-      	throw new IllegalArgumentException("El salario es mayor al pedido");
+    Map<String, Object> response = new HashMap<>();
+    if ((announcement.getSalary() < 1000000 && announcement.getJob() == Job.JAVA)
+        || (announcement.getSalary() < 2000000 && announcement.getJob() == Job.PLSQL)
+        || (announcement.getSalary() < 3000000 && announcement.getJob() == Job.GROOVY)
+        || (announcement.getSalary() < 3000000 && announcement.getJob() == Job.SWIFT)) {
+      return true;
+    }
+    throw new IllegalArgumentException("El salario es mayor al pedido");
   }
-  
-  //@Transactional(readOnly = true)
+
+  // @Transactional(readOnly = true)
   public boolean isValidEnglish(Announcement announcement) {
-	  if((announcement.getEnglish() == English.NO  && (announcement.getJob() == Job.GROOVY || announcement.getJob() == Job.SWIFT))){
-	    	throw new IllegalArgumentException("Se necesita ingles para esta convocatoria");
-	  }
-	  	return true;
-  }  
-      
+    if ((announcement.getEnglish() == English.NO
+        && (announcement.getJob() == Job.GROOVY || announcement.getJob() == Job.SWIFT))) {
+      throw new IllegalArgumentException("Se necesita ingles para esta convocatoria");
+    }
+    return true;
+  }
+
   public Object listErrors(BindingResult result) {
     return result.getFieldErrors().stream()
         .map(err -> "El campo '" + err.getField() + "' " + err.getDefaultMessage())
