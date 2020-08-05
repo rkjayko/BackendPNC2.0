@@ -1,9 +1,8 @@
 /**
-*
-* @author  Jaime Mejia
-* @version 1.0
-* @since   4/08/2020
-*/
+ * @author Jaime Mejia
+ * @version 1.0
+ * @since 4/08/2020
+ */
 package co.com.cidenet.pnc.controller;
 
 import org.apache.log4j.Logger;
@@ -26,33 +25,32 @@ import co.com.cidenet.pnc.service.InterfaceStageService;
 @CrossOrigin(origins = "*")
 public class StageController {
 
-    @Autowired private InterfaceStageService stageService;
-    static final Logger logger = Logger.getLogger(StageController.class);
+  @Autowired private InterfaceStageService stageService;
+  static final Logger logger = Logger.getLogger(StageController.class);
 
-    @GetMapping(value = "/stages")
-    public Iterable<Stage> toList() {
-        return stageService.findAll();
-    }
+  @GetMapping(value = "/stages")
+  public Iterable<Stage> toList() {
+    return stageService.findAll();
+  }
 
-    @GetMapping("/stage/{id}")
-    public Stage toListById(@PathVariable("id") Long id) {
-        return stageService.findOneStage(id);
-    }
+  @GetMapping("/stage/{id}")
+  public Stage toListById(@PathVariable("id") Long id) {
+    return stageService.findOneStage(id);
+  }
 
-    @PostMapping(value = "/createstage")
-    public Stage add(@RequestBody Stage stage) {
-        return stageService.save(stage);
-    }
+  @PostMapping(value = "/createstage")
+  public Stage add(@RequestBody Stage stage) {
+    return stageService.save(stage);
+  }
 
-    @PutMapping("/editstage/{id}")
-    public Stage edit(@RequestBody Stage stage, @PathVariable("id") Long id) {
-        stage.setId(id);
-        return stageService.save(stage);
-    }
+  @PutMapping("/editstage/{id}")
+  public Stage edit(@RequestBody Stage stage, @PathVariable("id") Long id) {
+    stage.setId(id);
+    return stageService.save(stage);
+  }
 
-    @DeleteMapping("/stage/{id}")
-    public void delete(@PathVariable("id") Long id) {
-    	stageService.deleteById(id);
-    }
+  @DeleteMapping("/stage/{id}")
+  public void delete(@PathVariable("id") Long id) {
+    stageService.deleteById(id);
+  }
 }
-

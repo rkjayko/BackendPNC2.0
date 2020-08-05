@@ -1,30 +1,24 @@
 package co.com.cidenet.pnc.entity;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /*
 Created by : Jaime Mejia
@@ -76,11 +70,13 @@ public class Announcement {
   @Enumerated(value = EnumType.STRING)
   private English english;
 
-  @JoinTable(name = "ANNOUCEMENT_STAGE", joinColumns = { @JoinColumn(name = "announcement_id") }, inverseJoinColumns = {
-  @JoinColumn(name = "stage_id") })
+  @JoinTable(
+      name = "ANNOUCEMENT_STAGE",
+      joinColumns = {@JoinColumn(name = "announcement_id")},
+      inverseJoinColumns = {@JoinColumn(name = "stage_id")})
   @ManyToMany
-  private Set<Stage> annoStages = new HashSet<>(); 
-  
+  private Set<Stage> annoStages = new HashSet<>();
+
   @ManyToMany(mappedBy = "applAnnouncements")
   private Set<Candidate> annoApplicants = new HashSet<>();
 
@@ -134,22 +130,22 @@ public class Announcement {
   public void setEnglish(English english) {
     this.english = english;
   }
-  
+
   public Set<Stage> getAnnouncementStages() {
-      return annoStages;
+    return annoStages;
   }
 
   public void setAnnouncementStages(Set<Stage> annoStages) {
-      this.annoStages = annoStages;
-  }  
-  
+    this.annoStages = annoStages;
+  }
+
   public Set<Candidate> getAnnouncementCandidates() {
-      return annoApplicants;
+    return annoApplicants;
   }
 
   public void setAnnouncementCandidate(Set<Candidate> annoApplicants) {
-      this.annoApplicants = annoApplicants;
-  }  
+    this.annoApplicants = annoApplicants;
+  }
 
   @Override
   public int hashCode() {
