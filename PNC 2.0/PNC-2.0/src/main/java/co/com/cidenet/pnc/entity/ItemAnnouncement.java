@@ -20,7 +20,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "candidate_items")
+@Table(name = "announcement_items")
 public class ItemAnnouncement implements Serializable {
 
   @Id

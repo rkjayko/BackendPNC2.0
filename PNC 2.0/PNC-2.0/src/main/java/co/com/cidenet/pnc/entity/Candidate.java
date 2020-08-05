@@ -5,23 +5,32 @@
  */
 package co.com.cidenet.pnc.entity;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
-@Table(name = "Candidates")
+@Table(name = "APPLICANT")
 public class Candidate {
 
   enum ProgrammingLanguage {
@@ -68,9 +77,9 @@ public class Candidate {
   @Column(nullable = false)
   private String softSkill;
 
-  @ManyToMany(mappedBy = "candidates")
-  private List<Announcement> announcements;
-
+  @ManyToMany
+  private Set<Announcement> applAnnouncements = new HashSet<>();
+  
   /** @return the id */
   public Long getId() {
     return id;
@@ -151,70 +160,4 @@ public class Candidate {
     this.softSkill = softSkill;
   }
 
-  /** @return the announcements */
-  public List<Announcement> getAnnouncements() {
-    return announcements;
-  }
-
-  /** @param announcements the announcements to set */
-  public void setAnnouncements(List<Announcement> announcements) {
-    this.announcements = announcements;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(
-        announcements,
-        email,
-        english,
-        firstName,
-        id,
-        lastName,
-        programmingLanguage,
-        salary,
-        softSkill);
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!(obj instanceof Candidate)) {
-      return false;
-    }
-    Candidate other = (Candidate) obj;
-    return Objects.equals(announcements, other.announcements)
-        && Objects.equals(email, other.email)
-        && english == other.english
-        && Objects.equals(firstName, other.firstName)
-        && Objects.equals(id, other.id)
-        && Objects.equals(lastName, other.lastName)
-        && programmingLanguage == other.programmingLanguage
-        && Objects.equals(salary, other.salary)
-        && Objects.equals(softSkill, other.softSkill);
-  }
-
-  @Override
-  public String toString() {
-    return "Candidate [id="
-        + id
-        + ", firstName="
-        + firstName
-        + ", lastName="
-        + lastName
-        + ", email="
-        + email
-        + ", programmingLanguage="
-        + programmingLanguage
-        + ", english="
-        + english
-        + ", salary="
-        + salary
-        + ", softSkill="
-        + softSkill
-        + ", announcements="
-        + announcements
-        + "]";
-  }
 }

@@ -1,31 +1,37 @@
 package co.com.cidenet.pnc.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /*
 Created by : Jaime Mejia
 */
 
 @Entity
-@Table(name = "Announcements")
+@Table(name = "ANNOUNCEMENTS")
 public class Announcement {
 
   public enum Job {
@@ -47,6 +53,7 @@ public class Announcement {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "announcement_id")
   private Long id;
 
   @NotEmpty(message = "no puede estar vacio")
@@ -69,20 +76,13 @@ public class Announcement {
   @Enumerated(value = EnumType.STRING)
   private English english;
 
-  @JoinTable(
-      name = "rel_announcements_candidates",
-      joinColumns = @JoinColumn(name = "FK_ANNOUNCEMENT", nullable = false),
-      inverseJoinColumns = @JoinColumn(name = "FK_CANDIDATE", nullable = false))
-  @ManyToMany(cascade = CascadeType.ALL)
-  private List<Candidate> candidates;
-
-  public void addAuthor(Candidate candidate) {
-    if (this.candidates == null) {
-      this.candidates = new ArrayList<>();
-    }
-
-    this.candidates.add(candidate);
-  }
+  @JoinTable(name = "ANNOUCEMENT_STAGE", joinColumns = { @JoinColumn(name = "announcement_id") }, inverseJoinColumns = {
+  @JoinColumn(name = "stage_id") })
+  @ManyToMany
+  private Set<Stage> annoStages = new HashSet<>(); 
+  
+  @ManyToMany(mappedBy = "applAnnouncements")
+  private Set<Candidate> annoApplicants = new HashSet<>();
 
   /** @return the id */
   public Long getId() {
@@ -134,14 +134,22 @@ public class Announcement {
   public void setEnglish(English english) {
     this.english = english;
   }
-
-  public List<Candidate> getCandidates() {
-    return candidates;
+  
+  public Set<Stage> getAnnouncementStages() {
+      return annoStages;
   }
 
-  public void setCandidates(List<Candidate> candidates) {
-    this.candidates = candidates;
+  public void setAnnouncementStages(Set<Stage> annoStages) {
+      this.annoStages = annoStages;
+  }  
+  
+  public Set<Candidate> getAnnouncementCandidates() {
+      return annoApplicants;
   }
+
+  public void setAnnouncementCandidate(Set<Candidate> annoApplicants) {
+      this.annoApplicants = annoApplicants;
+  }  
 
   @Override
   public int hashCode() {
