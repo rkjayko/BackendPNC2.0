@@ -19,7 +19,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
-
 /*
 Created by : Jaime Mejia
 */

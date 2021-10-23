@@ -5,7 +5,6 @@
  */
 package co.com.cidenet.pnc.service;
 
-
 import co.com.cidenet.pnc.entity.Stage;
 
 public interface InterfaceStageService {
